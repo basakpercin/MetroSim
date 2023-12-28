@@ -1,0 +1,125 @@
+/**********************************************************
+* Project 1: Metro Simulator
+* CS 15
+* README
+* Basak Percin, June 2022
+*********************************************************/
+
+Compile/run:
+     - Compile using
+            make MetroSim
+     - run executable with
+            ./MetroSim stationsFile passFile [commands]
+     
+     -for testing file compiling and use:
+            make test
+
+
+Program Purpose:
+     The purpose of this project is to design, code and test a metro simulator. 
+The simulator uses the greenline metro. The simulator takes in 3 commands, move
+train, add passenger and finish. Each passenger ([ID, Arrival -> Destination])
+will be created and queued(FIFO) according to their arrival stations. Moving
+train will remove passengers whose destination station is the current station 
+and add every passenger at current station to the train according to their 
+destination stations. Removed passenger info will be logged into the output file
+provided at the beginning of the program by the user. Passengers on the train
+and passengers waiting at stations will be printed to the console. 
+
+
+
+Acknowledgements: 
+
+Split String: https://www.delftstack.com/howto/cpp/cpp-split-string-by-space/;
+File Handling: https://www.w3schools.com/cpp/cpp_files.asp,
+               https://cplusplus.com/reference/string/string/getline/;
+Command-line arguments: https://www.geeksforgeeks.org/
+Libraries source & print iterations on list/vector: cplusplus.com;
+Makefile source: CS15 lab05 and lecture;
+
+
+Files: 
+
+main.cpp:
+     Handles opening, creating and manipulating files, also handles commands:
+     move train, add passenger and terminate the simulation. Initializes train
+     and simulator.
+
+MetroSim.cpp:
+     Implementation of MetroSim class. Includes move train and add passenger
+     functionalities of the metro simulator. Works together with Train.cpp for
+     removing and adding passengers to the train itself.
+
+MetroSim.h:
+     Interface of MetroSim class.
+
+Train.cpp:
+     An implementation of the Train.h interface, the Train can be used to add or
+     remove Passengers to and from the train and prints who left the train at 
+     which station.
+
+Train.h:
+     A Train class that representes a list of PassengerQueues ordered by 
+     destination stations.
+
+PassengerQueue.cpp:
+     An implementation of the PassengerQueue.h interface, the PassengerQueue can
+     be used to create passenger queues in which passengers are given by command 
+     files or user inputs.
+
+PassengerQueue.h:
+     A PassengerQueue class that representes a queue of passengers and includes
+     functions.
+
+Passenger.cpp:
+     An implementation of the Passenger.h interface, the Passenger.cpp prints 
+     passenger data as id, arrival station and destination station.
+
+Passenger.h:
+     A Passenger class that includes info and a print function regarding a 
+     passenger object.
+
+stations.txt:
+     an example file containing a list of stations.
+
+test_commands.txt:
+     sample list of commands that you could give to the simulator
+
+the_metroSim:
+     reference implementation for students to see how 
+
+
+Data Structures:
+     Used list to implement PassengerQueues and used vector of PassengerQueues 
+     to implement stations and wagons.  
+
+Testing:
+     Unit Test file tests the simulation as a whole, creating and adding 
+     passengers to stations. Moving the train adds passengers to the train and 
+     removing the passengers who reached their destinations. Compares the 
+     output file to expected outcome. 
+
+     While implementing move train and remove passenger functions, 
+     stations[currentStation](MetroSim.cpp) and wagons[currentStation](Train.cpp)
+     variables were assigned to a variable name for the sake of simplicity, but
+     the assignment operator was giving the deep copy of the PassengerQueue,
+     therefore not changing the actual PassengerQueue. This was resolved by 
+     passing the actual variables for PassengerQueues.  
+
+     This simulator does not checks whether the user given inputs are correct or
+     not assumes inputs are correct.
+
+     When comparing my code to given the_MetroSim, my output was different when
+     the train at current station has completed its mission of removing and 
+     adding passengers to the train but hasn't left the station yet. When new 
+     passengers arrive at the current station, train didn't add them to wagons
+     but instead left for next station. I corrected it by checking whether
+     that station has passengers waiting before moving the train.
+     
+Part that you found most difficult:
+
+I think the most difficult part was separating the simulator into smaller .h and
+.cpp files and combining them in main.cpp while still imagining it as a whole
+program. I also found debugging a little complex because it was hard to 
+backtrack the issue from the outputs, since the outputs on the console and 
+output file were long and confusing. 
